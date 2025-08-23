@@ -34,3 +34,29 @@ html, body {
 .footer strong {
   color: #f0f0f5; /* Accent color for your name/year */
 }
+/* Default light theme styles */
+
+/* Dark mode styles */
+.dark body {
+  background-color: #121212;
+  color: #eee;
+}
+
+.dark .navbar {
+  background-color: #222;
+  color: #eee;
+}
+
+.dark .footer {
+  background-color: #222;
+  color: #eee;
+}
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
