@@ -1,0 +1,111 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e40af; /* deep blue */
+  padding: 12px 24px;
+  box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.left {
+  flex: 1;
+}
+
+.studentId {
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+}
+
+.center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  gap: 80px; /* keep your bigger spacing */
+}
+
+.center a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.center a:hover {
+  color: #93c5fd; /* lighter blue on hover */
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar,
+.bar1Open,
+.bar2Open,
+.bar3Open {
+  width: 26px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.bar1Open {
+  transform: rotate(45deg) translateY(8px);
+}
+
+.bar2Open {
+  opacity: 0;
+}
+
+.bar3Open {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+/* Dropdown menu */
+.dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 20px;
+  z-index: 1001;
+  min-width: 140px;
+}
+
+.dropdown a {
+  color: #1e40af;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.dropdown a:hover {
+  color: #2563eb; /* brighter blue on hover */
+}
