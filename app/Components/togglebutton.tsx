@@ -6,7 +6,7 @@ export default function DarkModeToggle() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    // On mount, check if user has dark mode enabled
+   
     const isDark = localStorage.getItem('darkMode') === 'true';
     setDarkMode(isDark);
     toggleDarkClass(isDark);

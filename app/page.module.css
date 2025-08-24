@@ -49,3 +49,8 @@
   font-size: 14px;
   line-height: 1.4;
 }
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin: 4px 0 10px 0;
+}

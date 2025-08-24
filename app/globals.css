@@ -12,13 +12,13 @@ html, body {
 }
 
 .main-content {
-  min-height: calc(100vh - 120px); /* Adjust based on header/footer size */
+  min-height: calc(100vh - 120px); 
   padding: 2rem;
 }
 
 .footer {
-  background-color:  #1e40af; /* Dark navy/blue */
-  color: #f0f0f5; /* Light text */
+  background-color:  #1e40af;
+  color: #f0f0f5; 
   text-align: center;
   padding: 12px 24px;
   font-size: 0.9rem;
@@ -32,11 +32,11 @@ html, body {
 }
 
 .footer strong {
-  color: #f0f0f5; /* Accent color for your name/year */
+  color: #f0f0f5;
 }
-/* Default light theme styles */
 
-/* Dark mode styles */
+
+
 .dark body {
   background-color: #121212;
   color: #eee;
