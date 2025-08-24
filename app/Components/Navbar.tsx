@@ -11,7 +11,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // On component mount, check if a saved tab exists in cookies and redirect
+
   useEffect(() => {
     const savedTab = Cookies.get('activeTab');
     if (savedTab && savedTab !== pathname) {
@@ -19,7 +19,7 @@ export default function Navbar() {
     }
   }, []);
 
-  // Function to set cookie and close hamburger menu (optional)
+
   const handleLinkClick = (path: string) => {
     Cookies.set('activeTab', path);
     setIsOpen(false);
