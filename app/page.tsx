@@ -52,10 +52,12 @@ gh pr create --title "Update README.md" --body "Added a new section to the READM
 
     setCommands(generatedCommands.trim());
   };
+   
 
   return (
     <div className={styles.container}>
       <div className={styles.formBox}>
+       <h1>WELCOME HOME</h1>
         <h2>Git Code Generator</h2>
         <div className={styles.form}>
           <label>Username:</label>

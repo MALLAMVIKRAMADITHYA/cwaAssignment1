@@ -13,7 +13,7 @@ export default function About() {
         <h2>How to use this website</h2>
         <div className={styles.videoWrapper}>
           <video controls className={styles.videoPlayer}>
-            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+            <source src="/videos/WorkingVideo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
