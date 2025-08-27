@@ -25,7 +25,6 @@ export default function HomePage() {
       repo: '',
     };
 
-    // Field-specific validation
     if (!username) newErrors.username = 'Username is required.';
     if (!token) newErrors.token = 'Token is required.';
     if (!owner) newErrors.owner = 'Owner is required.';
@@ -33,14 +32,12 @@ export default function HomePage() {
 
     setErrors(newErrors);
 
-    // If there are any errors, do not continue
     const hasErrors = Object.values(newErrors).some((error) => error !== '');
     if (hasErrors) {
       setCommands('');
       return;
     }
 
-    // No errors - proceed
     const generatedCommands = `
 git clone https://${username}:${token}@github.com/${owner}/${repo}.git
 cd ${repo}
@@ -58,31 +55,35 @@ gh pr create --title "Update README.md" --body "Added a new section to the READM
 
   return (
     <div className={styles.container}>
-      <div className={styles.form}>
-        <label>Username:</label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
-        {errors.username && <p className={styles.error}>{errors.username}</p>}
+      <div className={styles.formBox}>
+        <h2>Git Code Generator</h2>
+        <div className={styles.form}>
+          <label>Username:</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {errors.username && (
+            <p className={styles.error}>{errors.username}</p>
+          )}
 
-        <label>Token:</label>
-        <input value={token} onChange={(e) => setToken(e.target.value)} />
-        {errors.token && <p className={styles.error}>{errors.token}</p>}
+          <label>Token:</label>
+          <input value={token} onChange={(e) => setToken(e.target.value)} />
+          {errors.token && <p className={styles.error}>{errors.token}</p>}
 
-        <label>Owner:</label>
-        <input value={owner} onChange={(e) => setOwner(e.target.value)} />
-        {errors.owner && <p className={styles.error}>{errors.owner}</p>}
+          <label>Owner:</label>
+          <input value={owner} onChange={(e) => setOwner(e.target.value)} />
+          {errors.owner && <p className={styles.error}>{errors.owner}</p>}
 
-        <label>Repository:</label>
-        <input value={repo} onChange={(e) => setRepo(e.target.value)} />
-        {errors.repo && <p className={styles.error}>{errors.repo}</p>}
+          <label>Repository:</label>
+          <input value={repo} onChange={(e) => setRepo(e.target.value)} />
+          {errors.repo && <p className={styles.error}>{errors.repo}</p>}
 
-        <button onClick={handleExecute}>Execute</button>
+          <button onClick={handleExecute}>Execute</button>
+        </div>
       </div>
 
-      {commands && (
-        <pre className={styles.commands}>
-          {commands}
-        </pre>
-      )}
+      {commands && <pre className={styles.commands}>{commands}</pre>}
     </div>
   );
 }

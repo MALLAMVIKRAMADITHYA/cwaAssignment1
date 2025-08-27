@@ -1,18 +1,32 @@
 .container {
   display: flex;
-  flex-direction: row;
-  gap: 40px;
+  justify-content: center;
   padding: 2rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.formBox {
+  background-color: #f0f4ff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 45%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.formBox h2 {
+  margin-bottom: 1.5rem;
+  color: #0033cc;
+  text-align: left;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 300px;
-  max-width: 400px;
 }
 
 .form input {
@@ -39,16 +53,17 @@
 
 .commands {
   white-space: pre-wrap;
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  flex: 1;
-  min-width: 300px;
-  border: 1px solid #ccc;
+  background-color: #e8ebf8;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 50%;
+  border: 1px solid #a0a9ff;
   font-family: monospace;
   font-size: 14px;
   line-height: 1.4;
+  overflow-x: auto;
 }
+
 .error {
   color: red;
   font-size: 0.9rem;
