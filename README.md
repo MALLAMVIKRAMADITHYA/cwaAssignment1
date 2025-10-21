@@ -1,14 +1,12 @@
-# Sequelize Scaffold
+# Docker Scaffold
 
-This repository was scaffolded from the web UI.
+This repository includes Docker assets generated from the UI.
 
-## Quick start (local)
+## Build & Run
 ```bash
-npm i
-npm run dev
+docker compose up --build -d
+docker compose logs -f app
 ```
 
-## Docker (with Postgres)
-```bash
-docker compose up --build
-```
+- App: http://localhost:3000
+- PRISMA_PROVIDER / DATABASE_URL are set via docker-compose.yml (override as needed).
