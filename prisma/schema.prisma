@@ -1,20 +1,24 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "sqlite" // local dev uses SQLite
+  url      = env("DATABASE_URL") // e.g. file:./dev.db
 }
 
 model CommandLog {
-  id         String   @id @default(cuid())
-  username   String?
-  owner      String?
-  repo       String?
-  command    String
-  status     String
-  output     String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(cuid())
+  username  String?
+  owner     String?
+  repo      String?
+  command   String
+  status    String
+  output    String?
+  orm       String?
+  result    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -60,3 +60,138 @@ body {
   font-family: sans-serif;
 }
 
+/* --- Prisma/Sequelize page styles --- */
+:root {
+  --bg: #f7f5ff;
+  --card: #ffffff;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --brand: #2563eb;
+  --brand-dark: #1e40af;
+  --ok: #16a34a;
+  --err: #dc2626;
+  --table-head: #f1f5f9;
+  --border: #e2e8f0;
+  --ring: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.prisma-wrap {
+  max-width: 1100px;
+  margin: 32px auto 80px;
+  padding: 0 20px;
+  color: var(--ink);
+}
+
+.prisma-title {
+  font-size: 44px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 8px 0 6px;
+}
+
+.prisma-subtitle {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.06);
+}
+
+.row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.input, .select, .textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+  background: #fff;
+}
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--brand);
+  box-shadow: var(--ring);
+}
+.select { height: 40px; }
+.textarea { min-height: 90px; resize: vertical; }
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: #111827;
+  color: #fff;
+}
+.btn-primary:hover { background: #0b1220; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+.status {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin-top: 12px;
+}
+.status.ok  { background: #ecfdf5; color: var(--ok); border: 1px solid #bbf7d0; }
+.status.err { background: #fef2f2; color: var(--err); border: 1px solid #fecaca; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.table thead th {
+  background: var(--table-head);
+  text-align: left;
+  color: #0b1220;
+  font-weight: 600;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.table tbody td {
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.table tbody tr:hover { background: #fafafa; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+}
+
+.radio-group {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}

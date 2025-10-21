@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       username: body.username ?? null,
       owner: body.owner ?? null,
       repo: body.repo ?? null,
-      command: body.command,
+      command: body.command ?? "execute",
       status: body.status ?? "OK",
       output: body.output ?? null,
     },

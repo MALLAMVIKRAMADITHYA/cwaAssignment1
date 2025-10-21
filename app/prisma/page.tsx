@@ -1,127 +1,155 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type CommandLog = {
   id: string;
-  username?: string;
-  owner?: string;
-  repo?: string;
-  command: string;
-  status: string;
-  output?: string;
   createdAt: string;
+  orm?: string;
+  command: string;
+  result?: string;
 };
 
-export default function PrismaSequelizePage() {
-  const [orm, setOrm] = useState<'prisma' | 'sequelize'>('prisma');
-  const [username, setUsername] = useState('');
-  const [owner, setOwner] = useState('');
-  const [repo, setRepo] = useState('');
-  const [command, setCommand] = useState('git config --global user.name "demo"');
+export default function PrismaSequelizeScaffold() {
+  const [orm, setOrm] = useState<'prisma'|'sequelize'>('prisma');
+
+  // GitHub inputs
+  const [token, setToken]   = useState('');
+  const [owner, setOwner]   = useState('');
+  const [repo,  setRepo]    = useState('');
+  const [branch,setBranch]  = useState('main');
+
+  const [statusMsg, setStatusMsg] = useState<string>('');
+  const [busy, setBusy] = useState(false);
   const [logs, setLogs] = useState<CommandLog[]>([]);
-  const [loading, setLoading] = useState(false);
+
+  const canExecute = useMemo(
+    () => !!token && !!owner && !!repo,
+    [token, owner, repo]
+  );
 
   async function loadLogs() {
-    const res = await fetch('/api/command-logs', { cache: 'no-store' });
-    const data = await res.json();
+    const r = await fetch('/api/command-logs', { cache: 'no-store' });
+    const data = await r.json();
     setLogs(data);
   }
-
   useEffect(() => { loadLogs(); }, []);
 
   async function execute() {
-    setLoading(true);
+    setBusy(true);
+    setStatusMsg('');
     try {
-      await fetch('/api/command-logs', {
+      const res = await fetch('/api/orm/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username, owner, repo, command,
-          status: 'OK',
-          output: `Saved via ${orm.toUpperCase()}`
+          orm,
+          tables: [
+            { name: "CommandLog", columns: [
+              { name: "username", type: "string" },
+              { name: "owner",    type: "string" },
+              { name: "repo",     type: "string" },
+              { name: "command",  type: "string", required: true },
+              { name: "status",   type: "string" },
+            ] }
+          ],
+          github: {
+            token, owner, repo, branch,
+            commitMessage: `feat(${orm}): scaffold schema + files`
+          },
+          userInput: {
+            username: owner,
+            owner, repo,
+            command: "execute"
+          }
         })
       });
+
+      const raw = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        throw new Error(`Server did not return JSON (status ${res.status}). Body: ${raw.slice(0,300)}`);
+      }
+      if (!res.ok) throw new Error(data?.error || `Failed (status ${res.status})`);
+
+      setStatusMsg(`Added row using ${orm}. Committed: ${data.filesCommitted?.length ?? 0} file(s).`);
+      if (data.commitHtmlUrl) window.open(data.commitHtmlUrl, '_blank');
       await loadLogs();
+    } catch (e:any) {
+      setStatusMsg(`Error: ${e.message}`);
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   }
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Prisma / Sequelize</h1>
+    <div className="prisma-wrap">
+      <h1 className="prisma-title">Sequelize / Prisma Scaffold</h1>
+      <p className="prisma-subtitle">Select which ORM you want to generate, then press Execute.</p>
 
-      {/* Toggle */}
-      <div className="flex gap-3 items-center">
-        <button
-          onClick={() => setOrm('prisma')}
-          className={`px-3 py-1 rounded ${orm === 'prisma' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-        >
-          Prisma
-        </button>
-        <button
-          onClick={() => setOrm('sequelize')}
-          className={`px-3 py-1 rounded ${orm === 'sequelize' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-        >
-          Sequelize
-        </button>
+      {/* Execute Card */}
+      <div className="card" style={{marginBottom: 26}}>
+        <div className="radio-group">
+          <span className="badge">Choose ORM</span>
+          <label>
+            <input type="radio" checked={orm==='prisma'} onChange={()=>setOrm('prisma')} />
+            Prisma
+          </label>
+          <label>
+            <input type="radio" checked={orm==='sequelize'} onChange={()=>setOrm('sequelize')} />
+            Sequelize
+          </label>
+        </div>
+
+        {/* GitHub Inputs */}
+        <div className="row" style={{marginTop: 10}}>
+          <input className="input" placeholder="GitHub Token" value={token} onChange={e=>setToken(e.target.value)} />
+          <input className="input" placeholder="Owner" value={owner} onChange={e=>setOwner(e.target.value)} />
+          <input className="input" placeholder="Repo" value={repo} onChange={e=>setRepo(e.target.value)} />
+          <input className="input" placeholder="Branch (main)" value={branch} onChange={e=>setBranch(e.target.value)} />
+        </div>
+
+        <div className="row" style={{justifyContent:'flex-end', marginTop: 14}}>
+          <button className="btn btn-primary" disabled={busy || !canExecute} onClick={execute}>
+            {busy ? 'Working…' : 'Execute'}
+          </button>
+        </div>
+
+        {statusMsg && (
+          <div className={`status ${statusMsg.startsWith('Error') ? 'err' : 'ok'}`}>
+            {statusMsg}
+          </div>
+        )}
       </div>
-
-      {/* Inputs */}
-      <div className="grid gap-3">
-        <input
-          placeholder="Username"
-          className="border p-2 rounded"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input
-          placeholder="Owner"
-          className="border p-2 rounded"
-          value={owner}
-          onChange={e => setOwner(e.target.value)}
-        />
-        <input
-          placeholder="Repository"
-          className="border p-2 rounded"
-          value={repo}
-          onChange={e => setRepo(e.target.value)}
-        />
-        <textarea
-          placeholder="Command"
-          className="border p-2 rounded"
-          value={command}
-          onChange={e => setCommand(e.target.value)}
-        />
-      </div>
-
-      <button
-        onClick={execute}
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        {loading ? 'Executing…' : 'Execute & Save'}
-      </button>
 
       {/* Logs */}
-      <div>
-        <h2 className="font-semibold text-lg mt-6 mb-2">Saved Logs</h2>
-        {logs.length === 0 ? (
-          <p className="text-gray-500">No logs yet.</p>
-        ) : (
-          logs.map(log => (
-            <div key={log.id} className="border rounded p-3 mb-2">
-              <div className="text-sm text-gray-600">
-                {new Date(log.createdAt).toLocaleString()}
-              </div>
-              <div className="font-mono break-all">{log.command}</div>
-              <div className="text-xs">
-                status: {log.status} • user: {log.username ?? '-'}
-              </div>
-            </div>
-          ))
-        )}
+      <h2 style={{fontSize: 28, fontWeight: 700, margin: '14px 0'}}>Command Logs</h2>
+      <div className="card" style={{padding:0}}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th style={{width:'28%'}}>Time</th>
+              <th style={{width:'14%'}}>ORM</th>
+              <th>Command</th>
+              <th style={{width:'12%'}}>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {logs.length === 0 && (
+              <tr><td colSpan={4} style={{textAlign:'center', padding:'18px', color:'#64748b'}}>No logs yet</td></tr>
+            )}
+            {logs.map(l=>(
+              <tr key={l.id}>
+                <td>{new Date(l.createdAt).toLocaleString()}</td>
+                <td>{l.orm ?? '-'}</td>
+                <td style={{wordBreak:'break-word'}}>{l.command}</td>
+                <td><span className="badge" style={{borderColor: l.result==='ok' ? '#bbf7d0' : '#fecaca', background: l.result==='ok' ? '#ecfdf5' : '#fef2f2', color: l.result==='ok' ? '#166534' : '#991b1b'}}>{l.result ?? '-'}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
