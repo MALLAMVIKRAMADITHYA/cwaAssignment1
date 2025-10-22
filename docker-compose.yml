@@ -2,12 +2,22 @@ version: "3.9"
 services:
   app:
     build: .
-    image: cwa-app:latest
     ports:
       - "3000:3000"
     environment:
-      PRISMA_PROVIDER: "sqlite"
-      DATABASE_URL: "file:./dev.db"
-    command: >
-      sh -c "npx prisma generate || true &&
-             npm start"
+      PRISMA_PROVIDER: "postgresql"
+      DATABASE_URL: "postgresql://appuser:apppass@db:5432/appdb?schema=public"
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+volumes:
+  dbdata:
