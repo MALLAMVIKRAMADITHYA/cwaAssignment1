@@ -2,13 +2,21 @@ version: "3.9"
 services:
   app:
     build: .
+    image: cwa-app:latest
     ports:
       - "3000:3000"
     environment:
       PRISMA_PROVIDER: "postgresql"
       DATABASE_URL: "postgresql://appuser:apppass@db:5432/appdb?schema=public"
+      NODE_ENV: "production"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "npx prisma generate &&
+             npx prisma migrate deploy || true &&
+             npm start"
+
   db:
     image: postgres:15
     environment:
@@ -17,7 +25,13 @@ services:
       POSTGRES_DB: appdb
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     volumes:
       - dbdata:/var/lib/postgresql/data
+
 volumes:
   dbdata:
