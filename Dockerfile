@@ -8,7 +8,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Generate Prisma client if present (no-op for Sequelize)
+# If Prisma exists, generate client (no-op for Sequelize)
 RUN npx prisma generate || echo "no prisma"
 RUN npm run build
 
