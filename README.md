@@ -1,4 +1,4 @@
-# Sequelize Scaffold
+# Prisma Scaffold
 
 This repository was scaffolded from the web UI.
 
