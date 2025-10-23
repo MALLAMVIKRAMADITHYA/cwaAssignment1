@@ -1,12 +1,14 @@
-# Docker Scaffold
+# Prisma Scaffold
 
-This repository includes Docker assets generated from the UI.
+This repository was scaffolded from the web UI.
 
-## Build & Run
+## Quick start (local)
 ```bash
-docker compose up --build -d
-docker compose logs -f app
+npm i
+npm run dev
 ```
 
-- App: http://localhost:3000
-- PRISMA_PROVIDER / DATABASE_URL are set via docker-compose.yml (override as needed).
+## Docker (with Postgres)
+```bash
+docker compose up --build
+```
